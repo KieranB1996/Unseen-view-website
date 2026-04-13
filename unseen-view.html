@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unseen View — Personal Branding for CMOs & CEOs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0d0d0d;
+  --mid:#767676;
+  --rule:#e0ddd8;
+  --cream:#f7f5f1;
+  --cream2:#ede9e2;
+  --white:#ffffff;
+  --lav:#ede9f8;
+  --lav-mid:#c4b8f0;
+  --lav-deep:#7c6aff;
+  --lav-ink:#3d2fa0;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none}
+
+/* ── CURSOR ── */
+#cur{position:fixed;width:10px;height:10px;border-radius:50%;background:var(--ink);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .18s ease,height .18s ease,background .15s ease}
+#cur.on-dark{background:var(--white)}
+#cur.on-lav{background:var(--lav-deep)}
+#cur.big{width:46px;height:46px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:22px 48px;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:.5px solid transparent;transition:border-color .3s}
+nav.sc{border-bottom-color:var(--rule)}
+.logo{font-family:var(--serif);font-size:22px;font-weight:400;letter-spacing:-.01em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:12px}
+.logo em{font-style:italic;font-weight:300}
+.logo strong{font-style:normal;font-weight:500}
+.logo-badge{width:26px;height:26px;flex-shrink:0;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s}
+.logo:hover .logo-badge{background:var(--ink)}
+.logo:hover .logo-badge svg text{fill:var(--white)}
+.logo-badge svg{width:16px;height:14px}
+
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--ink);transition:width .25s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-links a.active{color:var(--ink)}
+
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-cta{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--white);background:var(--ink);border:none;padding:11px 24px;cursor:none;text-decoration:none;transition:background .2s;display:inline-block}
+.nav-cta:hover{background:var(--lav-deep)}
+
+/* Hamburger */
+.ham{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;background:none;border:none}
+.ham span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .3s}
+.ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile menu */
+.mob-menu{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--white);z-index:490;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:40px;opacity:0;pointer-events:none;transition:opacity .3s}
+.mob-menu.open{opacity:1;pointer-events:all}
+.mob-menu a{font-family:var(--serif);font-size:40px;font-weight:300;font-style:italic;color:var(--ink);text-decoration:none;transition:color .2s}
+.mob-menu a:hover{color:var(--lav-deep)}
+.mob-menu .mob-cta{font-family:var(--sans);font-size:13px;font-style:normal;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--ink);padding:14px 32px;margin-top:16px}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 72px;position:relative;overflow:hidden}
+.hero-ghost{position:absolute;top:50%;left:42%;transform:translate(-50%,-50%) rotate(-8deg);font-family:var(--serif);font-size:32vw;font-weight:300;font-style:italic;color:var(--cream);white-space:nowrap;pointer-events:none;user-select:none;z-index:0;line-height:1;letter-spacing:-.04em}
+
+/* UV SIGNAL */
+.uv-signal{position:absolute;top:50%;right:7%;transform:translateY(-50%);z-index:1;opacity:0;animation:sigIn 1.2s ease .8s forwards}
+@keyframes sigIn{from{opacity:0;transform:translateY(-50%) scale(.94)}to{opacity:1;transform:translateY(-50%) scale(1)}}
+.uv-signal svg{width:300px;height:300px}
+.uv-frame{animation:breathe 6s ease-in-out infinite;transform-origin:150px 150px}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
+.uv-ring{animation:ringCW 40s linear infinite;transform-origin:150px 150px}
+@keyframes ringCW{to{transform:rotate(360deg)}}
+
+.hero-eyebrow{position:relative;z-index:2;display:flex;align-items:center;gap:12px;margin-bottom:28px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);opacity:0;animation:up .8s ease .2s forwards}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--mid)}
+.hero-h{position:relative;z-index:2;font-family:var(--serif);font-size:clamp(52px,7.5vw,108px);font-weight:300;line-height:.95;letter-spacing:-.02em;color:var(--ink);max-width:780px;opacity:0;animation:up .9s ease .4s forwards}
+.hero-h em{font-style:italic;font-weight:300}
+.hero-bot{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;margin-top:56px;opacity:0;animation:up .9s ease .7s forwards}
+.hero-sub{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.7;color:var(--mid);max-width:400px}
+.hero-acts{display:flex;gap:16px;align-items:center}
+.hero-scroll{position:absolute;bottom:72px;right:48px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;opacity:0;animation:up .9s ease 1s forwards}
+.scroll-line{width:1px;height:48px;background:var(--rule);animation:sp 2s ease infinite}
+.scroll-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);writing-mode:vertical-rl}
+@keyframes sp{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(.6);opacity:1}}
+
+/* ── BUTTONS ── */
+.btn{font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;cursor:none;text-decoration:none;transition:all .25s;display:inline-block;border:1px solid}
+.btn-ink{color:var(--white);background:var(--ink);border-color:var(--ink)}
+.btn-ink:hover{background:var(--lav-deep);border-color:var(--lav-deep)}
+.btn-ghost{color:var(--ink);background:transparent;border-color:var(--rule);font-weight:400}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-white{color:var(--ink);background:var(--white);border-color:var(--white)}
+.btn-white:hover{background:var(--lav);border-color:var(--lav);color:var(--lav-deep)}
+.btn-owht{color:rgba(255,255,255,.6);background:transparent;border-color:rgba(255,255,255,.2);font-weight:400}
+.btn-owht:hover{border-color:var(--lav-mid);color:var(--lav-mid)}
+
+/* ── MARQUEE ── */
+.mq-wrap{border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule);overflow:hidden;padding:16px 0;background:var(--lav)}
+.mq-track{display:flex;animation:mq 32s linear infinite;width:max-content}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mq-item{font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;color:var(--lav-ink);padding:0 36px;white-space:nowrap;border-right:.5px solid var(--lav-mid);display:flex;align-items:center;gap:8px}
+.mq-item span{font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lav-deep)}
+.mq-dot{width:6px;height:6px;border-radius:50%;background:var(--lav-deep);opacity:.5;flex-shrink:0}
+
+/* ── PROCESS STRIP ── */
+.process{background:var(--cream);border-bottom:.5px solid var(--rule);padding:56px 48px}
+.process-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:.5px solid var(--rule)}
+.process-step{padding:36px 40px;border-right:.5px solid var(--rule);position:relative}
+.process-step:last-child{border-right:none}
+.process-num{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--lav-deep);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.process-num::after{content:'';display:block;width:20px;height:.5px;background:var(--lav-mid)}
+.process-title{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:10px;line-height:1.2}
+.process-desc{font-size:13px;font-weight:300;line-height:1.7;color:var(--mid)}
+/* Arrow between steps */
+.process-step:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--lav-mid);z-index:1;background:var(--cream);padding:2px 0}
+
+/* ── SECTIONS ── */
+section{padding:96px 48px}
+.sec-lbl{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;gap:12px;margin-bottom:48px}
+.sec-lbl::before{content:'';display:block;width:24px;height:1px;background:var(--mid)}
+.sec-h{font-family:var(--serif);font-size:clamp(36px,5vw,64px);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--ink)}
+.sec-h em{font-style:italic}
+
+/* ── SERVICES ── */
+.services{background:var(--white)}
+.svc-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px}
+.svc-desc{font-size:16px;font-weight:300;line-height:1.75;color:var(--mid);max-width:480px;margin-top:24px}
+.svc-stat{text-align:right}
+.svc-stat-n{font-family:var(--serif);font-size:72px;font-weight:300;font-style:italic;line-height:1;color:var(--ink)}
+.svc-stat-l{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-top:6px}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:.5px solid var(--rule)}
+.svc-card{padding:48px 40px;border-right:.5px solid var(--rule);position:relative;overflow:hidden}
+.svc-card:last-child{border-right:none}
+.svc-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--ink);transition:height .4s cubic-bezier(.16,1,.3,1);z-index:0}
+.svc-card:hover::before{height:100%}
+.svc-card>*{position:relative;z-index:1}
+.svc-card:hover .svc-n,.svc-card:hover .svc-title,.svc-card:hover .svc-body,.svc-card:hover .svc-lnk{color:var(--white)}
+.svc-card:hover .svc-lnk-line{background:var(--white)}
+.svc-card:hover .tag{color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.15);background:transparent}
+.svc-n{font-family:var(--serif);font-size:48px;font-weight:300;font-style:italic;color:var(--cream2);line-height:1;margin-bottom:24px;transition:color .35s}
+.svc-title{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.15;color:var(--ink);margin-bottom:16px;transition:color .35s}
+.svc-body{font-size:14px;font-weight:300;line-height:1.75;color:var(--mid);margin-bottom:32px;transition:color .35s}
+.svc-lnk{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .35s}
+.svc-lnk-line{display:block;width:24px;height:1px;background:var(--ink);transition:background .35s,width .25s}
+.svc-card:hover .svc-lnk-line{width:36px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);border:.5px solid var(--rule);padding:4px 10px;transition:all .35s}
+.tag-lav{background:var(--lav);color:var(--lav-deep);border-color:var(--lav-mid)}
+
+/* ── MANIFESTO ── */
+.manifesto{background:var(--cream);border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule)}
+.manifesto-inner{max-width:900px}
+.manifesto-q{font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:300;font-style:italic;line-height:1.3;color:var(--ink);margin-bottom:48px;border-left:2px solid var(--lav-deep);padding-left:32px}
+.manifesto-body{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.manifesto-p{font-size:15px;font-weight:300;line-height:1.8;color:var(--mid)}
+.manifesto-p strong{font-weight:500;color:var(--ink)}
+
+/* ── FOUNDER ── */
+.founder{background:var(--white);border-bottom:.5px solid var(--rule)}
+.founder-inner{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center}
+.founder-img{position:relative}
+.founder-photo{width:100%;aspect-ratio:3/4;background:var(--cream2);border:.5px solid var(--rule);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.founder-photo-placeholder{font-family:var(--serif);font-size:18px;font-style:italic;color:var(--mid);text-align:center;padding:40px}
+/* Lavender accent block behind photo */
+.founder-img::before{content:'';position:absolute;top:24px;left:24px;right:-24px;bottom:-24px;background:var(--lav);z-index:-1;border:.5px solid var(--lav-mid)}
+.founder-badge{position:absolute;bottom:24px;right:-32px;background:var(--ink);padding:20px 24px;z-index:2}
+.founder-badge-text{font-family:var(--serif);font-size:13px;font-style:italic;color:var(--white);line-height:1.4}
+.founder-badge-name{font-family:var(--sans);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:6px}
+
+.founder-content{}
+.founder-eyebrow{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--lav-deep);display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.founder-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--lav-deep)}
+.founder-h{font-family:var(--serif);font-size:clamp(32px,3.5vw,52px);font-weight:300;line-height:1.1;color:var(--ink);margin-bottom:28px}
+.founder-h em{font-style:italic}
+.founder-p{font-size:15px;font-weight:300;line-height:1.8;color:var(--mid);margin-bottom:20px}
+.founder-p strong{font-weight:500;color:var(--ink)}
+.founder-sig{font-family:var(--serif);font-size:32px;font-style:italic;font-weight:300;color:var(--ink);margin-top:36px;margin-bottom:4px}
+.founder-sig-role{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
+
+/* ── SPEAKERS ── */
+.speakers{background:var(--white)}
+.spk-hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px}
+.spk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.spk-card{background:var(--cream);padding:36px 32px;position:relative;overflow:hidden;cursor:none;transition:background .3s}
+.spk-card:hover{background:var(--lav)}
+.spk-av{width:56px;height:56px;border-radius:50%;background:var(--cream2);margin-bottom:20px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;font-style:italic;color:var(--mid);border:1px solid var(--rule);transition:background .3s,border-color .3s,color .3s}
+.spk-card:hover .spk-av{background:var(--lav-mid);border-color:var(--lav-deep);color:var(--white)}
+.spk-name{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:4px}
+.spk-role{font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);margin-bottom:16px}
+.spk-topics{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.spk-topic{font-size:11px;color:var(--mid);background:var(--white);border:.5px solid var(--rule);padding:3px 10px;transition:all .3s}
+.spk-card:hover .spk-topic{background:var(--lav);border-color:var(--lav-mid);color:var(--lav-deep)}
+.spk-q{font-family:var(--serif);font-size:15px;font-style:italic;font-weight:300;color:var(--mid);line-height:1.6;border-top:.5px solid var(--rule);padding-top:16px;margin-top:8px;transition:border-color .3s}
+.spk-card:hover .spk-q{border-color:var(--lav-mid)}
+
+/* ── STATS ── */
+.stats{background:var(--ink);display:grid;grid-template-columns:1fr 1fr 1fr 1fr}
+.stat{padding:48px 40px;border-right:.5px solid rgba(255,255,255,.08);text-align:center}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--serif);font-size:56px;font-weight:300;font-style:italic;color:var(--white);line-height:1;margin-bottom:8px}
+.stat-l{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+
+/* ── PARTNERSHIPS ── */
+.partnerships{background:var(--ink);color:var(--white)}
+.partnerships .sec-lbl{color:rgba(255,255,255,.4)}
+.partnerships .sec-lbl::before{background:rgba(255,255,255,.4)}
+.partnerships .sec-h{color:var(--white)}
+.pship-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-top:56px}
+.pship-lead{font-family:var(--serif);font-size:24px;font-weight:300;font-style:italic;line-height:1.5;color:rgba(255,255,255,.7);margin-bottom:32px}
+.pship-p{font-size:14px;font-weight:300;line-height:1.8;color:rgba(255,255,255,.5);margin-bottom:16px}
+.pship-cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:24px;padding:28px 0;border-bottom:.5px solid rgba(255,255,255,.08)}
+.step:first-child{border-top:.5px solid rgba(255,255,255,.08)}
+.step-n{font-family:var(--serif);font-size:32px;font-weight:300;font-style:italic;color:var(--lav-deep);flex-shrink:0;width:40px;line-height:1;margin-top:2px}
+.step-title{font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--white);margin-bottom:6px}
+.step-desc{font-size:13px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.65}
+
+/* ── ADVISORY ── */
+.advisory{background:var(--lav)}
+.advisory .sec-lbl{color:var(--lav-deep)}
+.advisory .sec-lbl::before{background:var(--lav-deep)}
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px}
+.adv-features{display:flex;flex-direction:column}
+.feat{padding:28px 0;border-bottom:.5px solid var(--lav-mid);display:grid;grid-template-columns:40px 1fr;gap:20px;cursor:none}
+.feat:first-child{border-top:.5px solid var(--lav-mid)}
+.feat-icon{width:36px;height:36px;border:.5px solid var(--lav-mid);background:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:18px;font-style:italic;color:var(--lav-deep);flex-shrink:0;margin-top:2px}
+.feat-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:5px;letter-spacing:.02em}
+.feat-text{font-size:13px;font-weight:300;color:var(--mid);line-height:1.65}
+.adv-card{background:var(--white);border:.5px solid var(--lav-mid);padding:48px 40px}
+.adv-card-lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--lav-deep);margin-bottom:24px}
+.adv-card h3{font-family:var(--serif);font-size:32px;font-weight:300;font-style:italic;line-height:1.25;color:var(--ink);margin-bottom:20px}
+.adv-card p{font-size:14px;font-weight:300;line-height:1.8;color:var(--mid);margin-bottom:32px}
+.adv-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.adv-list li{font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.adv-list li::before{content:'→';color:var(--lav-deep);flex-shrink:0;font-size:12px;margin-top:1px}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--white);border-top:.5px solid var(--rule)}
+.test-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:56px}
+.test{background:var(--cream);padding:40px;transition:background .3s;position:relative}
+.test:hover{background:var(--lav)}
+.test-q{font-family:var(--serif);font-size:22px;font-weight:300;font-style:italic;line-height:1.5;color:var(--ink);margin-bottom:28px}
+.test-auth{display:flex;align-items:center;gap:14px}
+.test-av{width:40px;height:40px;border-radius:50%;background:var(--cream2);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;font-style:italic;color:var(--mid);flex-shrink:0;transition:background .3s,border-color .3s,color .3s}
+.test:hover .test-av{background:var(--lav-mid);border-color:var(--lav-deep);color:var(--white)}
+.test-name{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.test-role{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mid)}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--ink);padding:120px 48px;text-align:center;position:relative;overflow:hidden}
+/* Dark bg = white cursor; UV ghost is subtle */
+.cta-bg-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.05;pointer-events:none;z-index:0}
+.cta-band>*:not(.cta-bg-mark){position:relative;z-index:1}
+.cta-band h2{font-family:var(--serif);font-size:clamp(36px,5vw,72px);font-weight:300;line-height:1.1;color:var(--white);max-width:700px;margin:0 auto 40px}
+.cta-band h2 em{font-style:italic;color:var(--lav-mid)}
+.cta-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 48px;line-height:1.7}
+.cta-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+/* CTA on dark bg needs white/outline buttons */
+.cta-band .btn-ghost{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.25)}
+.cta-band .btn-ghost:hover{color:var(--white);border-color:rgba(255,255,255,.7)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:64px 48px 40px;border-top:.5px solid rgba(255,255,255,.08)}
+.ft-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:56px;padding-bottom:40px;border-bottom:.5px solid rgba(255,255,255,.08)}
+.ft-logo{font-family:var(--serif);font-size:28px;font-weight:300;color:var(--white);margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.ft-logo em{font-style:italic}
+.ft-logo-badge{width:34px;height:34px;border:1.5px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ft-logo-badge svg{width:20px;height:17px}
+.ft-tag{font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.3)}
+.ft-links{display:flex;gap:64px}
+.ft-col-lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:20px}
+.ft-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ft-list a{font-size:13px;font-weight:300;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s}
+.ft-list a:hover{color:var(--lav-mid)}
+.ft-bot{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.04em}
+.ft-bot a{color:rgba(255,255,255,.2);text-decoration:none;transition:color .2s}
+.ft-bot a:hover{color:rgba(255,255,255,.5)}
+.ft-bot-links{display:flex;gap:24px}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(13,13,13,.87);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(5px)}
+.overlay.on{opacity:1;pointer-events:all}
+.modal{background:var(--white);width:100%;max-width:560px;padding:56px;position:relative;transform:translateY(20px);transition:transform .3s;max-height:92vh;overflow-y:auto}
+.overlay.on .modal{transform:translateY(0)}
+.modal-x{position:absolute;top:24px;right:24px;background:none;border:none;font-size:20px;cursor:none;color:var(--mid);line-height:1;padding:4px;transition:color .2s}
+.modal-x:hover{color:var(--ink)}
+.modal h3{font-family:var(--serif);font-size:32px;font-weight:300;font-style:italic;margin-bottom:8px;color:var(--ink)}
+.modal-sub{font-size:13px;color:var(--mid);margin-bottom:32px;line-height:1.6}
+.fg{margin-bottom:20px}
+.fg label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.fg input,.fg select,.fg textarea{width:100%;padding:12px 16px;font-family:var(--sans);font-size:14px;font-weight:300;color:var(--ink);background:var(--cream);border:.5px solid var(--rule);outline:none;transition:border-color .2s;cursor:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--lav-deep)}
+.fg textarea{resize:vertical;min-height:100px}
+.fg select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23767676' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-submit{width:100%;padding:16px;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--white);background:var(--ink);border:none;cursor:none;margin-top:8px;transition:background .2s}
+.btn-submit:hover{background:var(--lav-deep)}
+
+/* Form success state */
+.form-success{display:none;text-align:center;padding:32px 0}
+.form-success.on{display:block}
+.form-fields.hidden{display:none}
+.success-mark{font-family:var(--serif);font-size:64px;font-style:italic;color:var(--lav-deep);line-height:1;margin-bottom:16px}
+.success-h{font-family:var(--serif);font-size:28px;font-weight:300;font-style:italic;color:var(--ink);margin-bottom:12px}
+.success-p{font-size:14px;font-weight:300;color:var(--mid);line-height:1.7}
+
+/* ── ANIMATIONS ── */
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.rev{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.rev.on{opacity:1;transform:translateY(0)}
+
+/* ── MOBILE ── */
+@media(max-width:900px){
+  .founder-inner{grid-template-columns:1fr;gap:48px}
+  .founder-img::before{display:none}
+  .founder-badge{right:0;bottom:0}
+  .process-inner{grid-template-columns:1fr}
+  .process-step{border-right:none;border-bottom:.5px solid var(--rule)}
+  .process-step:last-child{border-bottom:none}
+  .process-step::after{display:none}
+}
+@media(max-width:768px){
+  nav{padding:20px 24px}
+  .nav-links,.nav-right .nav-cta{display:none}
+  .ham{display:flex}
+  section{padding:64px 24px}
+  .hero{padding:0 24px 64px}
+  .hero-h{font-size:48px}
+  .hero-bot{flex-direction:column;gap:28px;align-items:flex-start}
+  .uv-signal{display:none}
+  .svc-intro{grid-template-columns:1fr;gap:32px}.svc-stat{text-align:left}
+  .svc-grid,.spk-grid,.test-grid{grid-template-columns:1fr}
+  .svc-card{border-right:none;border-bottom:.5px solid var(--rule)}
+  .manifesto-body,.pship-layout,.adv-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .ft-top{flex-direction:column;gap:40px}.ft-links{flex-direction:column;gap:32px}
+  .ft-bot{flex-direction:column;gap:12px;text-align:center}
+  .modal{padding:36px 24px;margin:16px}.frow{grid-template-columns:1fr}
+  .process{padding:40px 24px}
+  body{cursor:auto}#cur{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#services" class="mob-link">Services</a>
+  <a href="#speakers" class="mob-link">Speakers</a>
+  <a href="#partnerships" class="mob-link">Partnerships</a>
+  <a href="#advisory" class="mob-link">Advisory</a>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#" class="mob-cta open-modal mob-link">Book a Speaker</a>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-x" id="mx">✕</button>
+    <div class="form-fields" id="form-fields">
+      <h3>Book a Speaker</h3>
+      <p class="modal-sub">Tell us about your event and we'll match you with the right CMO voice within 48 hours.</p>
+      <div class="frow">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Jane"></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+      </div>
+      <div class="fg"><label>Company / Organisation</label><input type="text" placeholder="Acme Corp"></div>
+      <div class="fg"><label>Enquiry Type</label>
+        <select><option value="">Select type</option><option>Keynote Speaker</option><option>Panel / Moderator</option><option>Podcast / Media</option><option>Brand Partnership</option><option>CMO Advisory Programme</option></select>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Event Date</label><input type="date"></div>
+        <div class="fg"><label>Budget Range</label>
+          <select><option value="">Select range</option><option>Under $5k</option><option>$5k – $15k</option><option>$15k – $50k</option><option>$50k+</option></select>
+        </div>
+      </div>
+      <div class="fg"><label>Brief (optional)</label><textarea placeholder="Tell us about the event, audience, and what you're looking for..."></textarea></div>
+      <button class="btn-submit" id="submit-btn">Submit Enquiry →</button>
+    </div>
+    <!-- Success state -->
+    <div class="form-success" id="form-success">
+      <div class="success-mark">✓</div>
+      <div class="success-h">We'll be in touch shortly.</div>
+      <p class="success-p">Thanks for reaching out. We'll review your enquiry and match you with the right CMO voice within 48 hours.</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <div class="logo-badge">
+      <svg viewBox="0 0 32 28" fill="none">
+        <text x="0" y="24" font-family="Cormorant Garamond,serif" font-size="26" font-weight="400" fill="#0d0d0d" letter-spacing="-2">UV</text>
+      </svg>
+    </div>
+    <em>Unseen</em><strong>view</strong>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#speakers">Speakers</a></li>
+    <li><a href="#partnerships">Partnerships</a></li>
+    <li><a href="#advisory">Advisory</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="nav-cta open-modal">Book a Speaker</a>
+    <button class="ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-ghost">UV</div>
+
+  <!-- UV SIGNAL BRAND MARK -->
+  <div class="uv-signal">
+    <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g class="uv-ring">
+        <circle cx="150" cy="150" r="138" stroke="#e0ddd8" stroke-width=".8" stroke-dasharray="5 8"/>
+        <circle cx="150" cy="12"  r="2.5" fill="#c4b8f0"/>
+        <circle cx="288" cy="150" r="2.5" fill="#c4b8f0"/>
+        <circle cx="150" cy="288" r="2.5" fill="#c4b8f0"/>
+        <circle cx="12"  cy="150" r="2.5" fill="#c4b8f0"/>
+      </g>
+      <circle cx="150" cy="150" r="118" stroke="#e0ddd8" stroke-width=".5"/>
+      <g class="uv-frame">
+        <rect x="62" y="62" width="176" height="176" stroke="#0d0d0d" stroke-width="1.5" fill="none"/>
+        <!-- Corner ticks -->
+        <line x1="62"  y1="62"  x2="50"  y2="62"  stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="62"  y1="62"  x2="62"  y2="50"  stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="238" y1="62"  x2="250" y2="62"  stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="238" y1="62"  x2="238" y2="50"  stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="62"  y1="238" x2="50"  y2="238" stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="62"  y1="238" x2="62"  y2="250" stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="238" y1="238" x2="250" y2="238" stroke="#0d0d0d" stroke-width="1.5"/>
+        <line x1="238" y1="238" x2="238" y2="250" stroke="#0d0d0d" stroke-width="1.5"/>
+        <!-- Inner fine rule -->
+        <rect x="70" y="70" width="160" height="160" stroke="#0d0d0d" stroke-width=".4" fill="none" opacity=".3"/>
+        <!-- UV type -->
+        <text x="150" y="182" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="108" font-weight="400" letter-spacing="-6" fill="#0d0d0d">UV</text>
+        <!-- Rule -->
+        <line x1="82" y1="196" x2="218" y2="196" stroke="#0d0d0d" stroke-width=".6"/>
+        <!-- Tagline -->
+        <text x="150" y="210" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="8.5" font-weight="400" letter-spacing="3.5" fill="#0d0d0d" opacity=".55">UNSEEN VIEW</text>
+      </g>
+      <!-- Lavender accent line -->
+      <line x1="62" y1="86" x2="238" y2="86" stroke="#7c6aff" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">The CMO Personal Brand Platform</div>
+  <h1 class="hero-h">Your name should<br>be opening doors.<br>Is it <em>yet?</em></h1>
+  <div class="hero-bot">
+    <p class="hero-sub">We turn CMOs and CEOs into the most visible, credible, and commercially valuable voice in their category. Speaking. Partnerships. Advisory. Results you can point to.</p>
+    <div class="hero-acts">
+      <a href="#" class="btn btn-ink open-modal">Work With Us</a>
+      <a href="#proof" class="btn btn-ghost">See the Results</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span class="scroll-lbl">Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span class="mq-item">1M+ Impressions Weekly <span>Client Result</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">AdAge Top 5 Creators to Follow <span>Client Recognition</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Top 100 LinkedIn Creators Worldwide <span>Client Recognition</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">CMO Speaker Booking <span>Service 01</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Brand Partnerships <span>Service 02</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Personal Brand Advisory <span>Service 03</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">1M+ Impressions Weekly <span>Client Result</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">AdAge Top 5 Creators to Follow <span>Client Recognition</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Top 100 LinkedIn Creators Worldwide <span>Client Recognition</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">CMO Speaker Booking <span>Service 01</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Brand Partnerships <span>Service 02</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+    <span class="mq-item">Personal Brand Advisory <span>Service 03</span></span>
+    <span class="mq-item"><span class="mq-dot"></span></span>
+  </div>
+</div>
+
+<!-- PROCESS STRIP -->
+<div class="process rev">
+  <div class="process-inner">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-title">We decide if it's a fit</div>
+      <div class="process-desc">We don't take everyone. We only work with leaders we genuinely believe we can get exceptional results for. If that's you, we'll know quickly.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-title">We build your strategy</div>
+      <div class="process-desc">Positioning, content, speaking, partnerships — mapped to your goals and your voice. No templates. No generic playbooks.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-title">You become impossible to ignore</div>
+      <div class="process-desc">The stages, the recognition, the inbound. Your name starts doing work you didn't have to show up for.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="sec-lbl">What We Do</div>
+  <div class="svc-intro rev">
+    <div>
+      <h2 class="sec-h">Three things most<br>senior leaders <em>neglect.</em></h2>
+      <p class="svc-desc">Most CMOs are the best-kept secret in their industry. Great at the job. Invisible outside it. We fix that — with speaking opportunities that command rooms, brand partnerships that convert, and a personal brand that compounds every time you show up.</p>
+    </div>
+    <div class="svc-stat"><div class="svc-stat-n">1M+</div><div class="svc-stat-l">Weekly impressions generated for a single client</div></div>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="svc-n">01</div>
+      <h3 class="svc-title">CMO Speaker Booking</h3>
+      <div class="tags"><span class="tag">Keynotes</span><span class="tag">Panels</span><span class="tag">Podcasts</span><span class="tag tag-lav">End-to-End</span></div>
+      <p class="svc-body">We place CMOs on the stages that actually matter — to the right room, at the right moment. Not just any slot. The kind of appearance that changes how your industry sees you. We handle every detail from brief to green room.</p>
+      <a href="#" class="svc-lnk open-modal"><span class="svc-lnk-line"></span>Book a Speaker</a>
+    </div>
+    <div class="svc-card">
+      <div class="svc-n">02</div>
+      <h3 class="svc-title">Brand Partnerships</h3>
+      <div class="tags"><span class="tag">Sponsored Content</span><span class="tag">Campaigns</span><span class="tag tag-lav">Fully Managed</span></div>
+      <p class="svc-body">Senior marketing leaders are the most trusted voices in the room — and brands are finally paying for access to that trust. We broker the deals, negotiate the rates, manage the relationship, and make sure what goes out is something you're proud to put your name on.</p>
+      <a href="#" class="svc-lnk open-modal"><span class="svc-lnk-line"></span>Explore Partnerships</a>
+    </div>
+    <div class="svc-card">
+      <div class="svc-n">03</div>
+      <h3 class="svc-title">Personal Brand Advisory</h3>
+      <div class="tags"><span class="tag">Strategy</span><span class="tag">Content</span><span class="tag tag-lav">Selective Intake</span></div>
+      <p class="svc-body">We take on very few clients. We only say yes when we know we can deliver results that are genuinely career-defining. If we work together, you get a strategy built around your specific voice, goals, and audience — and content that actually sounds like you wrote it.</p>
+      <a href="#" class="svc-lnk open-modal"><span class="svc-lnk-line"></span>Apply for Advisory</a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="proof">
+  <div class="manifesto-inner rev">
+    <div class="sec-lbl">What This Actually Looks Like</div>
+    <blockquote class="manifesto-q">"The results aren't hypothetical. They're on the record."</blockquote>
+    <div class="manifesto-body">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+
+          <!-- Nick Tran -->
+          <div style="border-left:2px solid var(--lav-deep);padding-left:24px">
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:2px">Nick Tran</div>
+            <div style="font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--lav-deep);margin-bottom:12px">President &amp; CMO, First Round (Diageo × Main Street Advisors) · Former Global Head of Marketing, TikTok</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:baseline;gap:10px"><span style="color:var(--ink);font-weight:500">1M+</span> organic LinkedIn impressions every week, sustained</div>
+              <div style="font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:baseline;gap:10px"><span style="color:var(--ink);font-weight:500">Top 100</span> LinkedIn Creators Worldwide</div>
+              <div style="font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:baseline;gap:10px"><span style="color:var(--ink);font-weight:500">Forbes</span> Most Influential CMO · AdAge Marketer of the Year · Fortune 40 Under 40</div>
+            </div>
+          </div>
+
+          <!-- Jolyon Varley -->
+          <div style="border-left:2px solid var(--lav-deep);padding-left:24px">
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:2px">Jolyon Varley</div>
+            <div style="font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--lav-deep);margin-bottom:12px">Co-Founder, OK COOL · Nike, Gucci, Disney, LVMH, Heineken, Spotify · TikTok &amp; Meta Official Partner</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:baseline;gap:10px"><span style="color:var(--ink);font-weight:500">#1</span> Culture Marketing Voice on LinkedIn</div>
+              <div style="font-size:13px;font-weight:300;color:var(--mid);display:flex;align-items:baseline;gap:10px"><span style="color:var(--ink);font-weight:500">AdAge</span> Top 5 Creators to Follow</div>
+            </div>
+          </div>
+
+          <!-- Placeholder for more -->
+          <div style="border-left:1px dashed var(--rule);padding-left:24px;opacity:.45">
+            <div style="font-family:var(--serif);font-size:16px;font-weight:300;font-style:italic;color:var(--mid)">More client results being added</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="manifesto-p" style="margin-bottom:20px">Most personal branding agencies measure success in followers and post frequency. We measure it in career-defining outcomes — the recognition that gets screenshotted, the speaking invitations that arrive inbound, the brand deals that come because you've become the only obvious choice.</p>
+        <p class="manifesto-p" style="margin-bottom:20px">Nick Tran is one of the most awarded consumer CMOs in the world. Jolyon Varley is the #1 culture marketing voice on LinkedIn. Both of them trusted Unseen View to build the personal brand behind the professional reputation.</p>
+        <p class="manifesto-p"><strong>We're selective because results require it.</strong> We don't take on clients we can't genuinely move the needle for. That's not a positioning line — it's how we protect the track record that makes clients like these possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER / ABOUT -->
+<section class="founder" id="about">
+  <div class="founder-inner rev">
+    <div class="founder-img">
+      <div class="founder-photo">
+        <div class="founder-photo-placeholder">
+          Danielle's photo<br>goes here
+        </div>
+      </div>
+      <div class="founder-badge">
+        <div class="founder-badge-text">"Most CMOs are the best-kept<br>secret in their industry.<br>We change that."</div>
+        <div class="founder-badge-name">Danielle — Founder, Unseen View</div>
+      </div>
+    </div>
+    <div class="founder-content">
+      <div class="founder-eyebrow">Meet the founder</div>
+      <h2 class="founder-h">Danielle built this<br>because the gap was <em>obvious.</em></h2>
+      <p class="founder-p">Senior marketing leaders are some of the most commercially valuable people in any organisation. They understand audiences, build trust at scale, and know how to make ideas move. Yet most of them are invisible outside their company walls.</p>
+      <p class="founder-p"><strong>That's not a personal failing. It's a strategy gap.</strong> No one had built a platform specifically for CMO-level personal brand — one that connected speaking, partnerships, and content into a single commercial outcome.</p>
+      <p class="founder-p">Unseen View fills that gap. We work with a small number of senior marketing and business leaders each quarter. We take on fewer clients than we're asked to, because we only say yes when we know we can deliver results that actually matter.</p>
+      <div class="founder-sig">Danielle</div>
+      <div class="founder-sig-role">Founder, Unseen View</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKERS -->
+<section class="speakers" id="speakers">
+  <div class="spk-hd rev">
+    <div><div class="sec-lbl">The Network</div><h2 class="sec-h">The CMOs people<br>actually want to <em>hear from.</em></h2></div>
+    <a href="#" class="btn btn-ghost open-modal">Request a Speaker →</a>
+  </div>
+  <div class="spk-grid rev">
+
+    <!-- Nick Tran -->
+    <div class="spk-card">
+      <div class="spk-av">N</div>
+      <div class="spk-name">Nick Tran</div>
+      <div class="spk-role">President &amp; CMO · First Round (Diageo × Main Street Advisors)</div>
+      <div class="spk-topics">
+        <span class="spk-topic">Culture Marketing</span>
+        <span class="spk-topic">Brand Building</span>
+        <span class="spk-topic">Consumer Strategy</span>
+        <span class="spk-topic">Gen Z</span>
+      </div>
+      <div class="spk-q">"We're entering the era of the CMO-turned-creator. Your personal brand is your next career move."</div>
+    </div>
+
+    <!-- Jolyon Varley -->
+    <div class="spk-card">
+      <div class="spk-av">J</div>
+      <div class="spk-name">Jolyon Varley</div>
+      <div class="spk-role">Co-Founder, OK COOL · #1 Culture Marketing Voice on LinkedIn</div>
+      <div class="spk-topics">
+        <span class="spk-topic">Creative Strategy</span>
+        <span class="spk-topic">Culture &amp; Subculture</span>
+        <span class="spk-topic">Brand Humanisation</span>
+        <span class="spk-topic">Content</span>
+      </div>
+      <div class="spk-q">"The brands winning right now are the ones that understand culture isn't a channel. It's the whole game."</div>
+    </div>
+
+    <!-- Coming soon placeholders -->
+    <div class="spk-card" style="opacity:.55">
+      <div class="spk-av" style="font-size:13px;font-style:normal;letter-spacing:.04em">TBA</div>
+      <div class="spk-name" style="font-style:italic;font-size:18px;opacity:.6">More speakers</div>
+      <div class="spk-role">Being confirmed — check back soon</div>
+      <div class="spk-topics"><span class="spk-topic">Consumer</span><span class="spk-topic">FMCG</span><span class="spk-topic">Luxury</span></div>
+      <div class="spk-q">"Roster expanding — enquire for current availability."</div>
+    </div>
+    <div class="spk-card" style="opacity:.55">
+      <div class="spk-av" style="font-size:13px;font-style:normal;letter-spacing:.04em">TBA</div>
+      <div class="spk-name" style="font-style:italic;font-size:18px;opacity:.6">More speakers</div>
+      <div class="spk-role">Being confirmed — check back soon</div>
+      <div class="spk-topics"><span class="spk-topic">Retail</span><span class="spk-topic">DTC</span><span class="spk-topic">Growth</span></div>
+      <div class="spk-q">"Roster expanding — enquire for current availability."</div>
+    </div>
+    <div class="spk-card" style="opacity:.55">
+      <div class="spk-av" style="font-size:13px;font-style:normal;letter-spacing:.04em">TBA</div>
+      <div class="spk-name" style="font-style:italic;font-size:18px;opacity:.6">More speakers</div>
+      <div class="spk-role">Being confirmed — check back soon</div>
+      <div class="spk-topics"><span class="spk-topic">Agency</span><span class="spk-topic">Leadership</span><span class="spk-topic">Media</span></div>
+      <div class="spk-q">"Roster expanding — enquire for current availability."</div>
+    </div>
+
+    <!-- Join card -->
+    <div class="spk-card" style="background:var(--ink);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;">
+      <div class="sec-lbl" style="color:rgba(255,255,255,.3)">Apply to Join</div>
+      <h3 style="font-family:var(--serif);font-size:28px;font-weight:300;font-style:italic;color:var(--white);line-height:1.2;margin-bottom:20px">We don't take everyone. That's the point.</h3>
+      <p style="font-size:13px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:28px">If you're a CMO or CEO with a genuine point of view and the ambition to be known for it — apply. We'll tell you honestly whether we think we can deliver the results you're after.</p>
+      <a href="#" class="btn btn-white open-modal">Apply Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats rev">
+  <div class="stat"><div class="stat-n">1M+</div><div class="stat-l">Weekly impressions, one client's LinkedIn</div></div>
+  <div class="stat"><div class="stat-n">Top 100</div><div class="stat-l">LinkedIn Creators Worldwide — client result</div></div>
+  <div class="stat"><div class="stat-n">AdAge</div><div class="stat-l">Top 5 Creators to Follow — client result</div></div>
+  <div class="stat"><div class="stat-n">#1</div><div class="stat-l">Culture Marketing Voice on LinkedIn — client result</div></div>
+</div>
+
+<!-- PARTNERSHIPS -->
+<section class="partnerships" id="partnerships">
+  <div class="sec-lbl">For Brands</div>
+  <h2 class="sec-h">Stop advertising to<br>buyers. <em>Talk to them.</em></h2>
+  <div class="pship-layout">
+    <div class="rev">
+      <p class="pship-lead">"A CMO recommending your product isn't an ad. It's a peer conversation. That's why it converts."</p>
+      <p class="pship-p">Senior marketing leaders carry a credibility that no media placement can buy. When one of our network recommends a product, their audience — fellow senior marketers, decision-makers, buyers — takes notice.</p>
+      <p class="pship-p">We run the entire relationship. Brief to contract to content to reporting. You deal with us. We deal with everything else. No chasing. No awkward negotiations. No content that makes anyone cringe.</p>
+      <div class="pship-cta">
+        <a href="#" class="btn btn-white open-modal">Explore Brand Partnerships</a>
+        <a href="#" class="btn btn-owht">Download Media Kit</a>
+      </div>
+    </div>
+    <div class="steps rev">
+      <div class="step"><div class="step-n">1</div><div><div class="step-title">Share Your Brief</div><div class="step-desc">Tell us your campaign goals, audience, and budget. We do the rest — no internal team required.</div></div></div>
+      <div class="step"><div class="step-n">2</div><div><div class="step-title">We Match You</div><div class="step-desc">Our team identifies the CMO voices from our vetted network who genuinely align with your brand and audience.</div></div></div>
+      <div class="step"><div class="step-n">3</div><div><div class="step-title">We Manage Everything</div><div class="step-desc">Rate negotiation, content review, contracts, publishing, and reporting — all handled by us.</div></div></div>
+      <div class="step"><div class="step-n">4</div><div><div class="step-title">Measure the Impact</div><div class="step-desc">Reach, engagement, conversions, and sentiment — a clear report connecting effort to business outcomes.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ADVISORY -->
+<section class="advisory" id="advisory">
+  <div class="sec-lbl">For CMOs & CEOs</div>
+  <h2 class="sec-h rev">Most senior leaders<br>are the best-kept secret<br>in their <em>industry.</em></h2>
+  <div class="adv-grid">
+    <div class="adv-features rev">
+      <div class="feat"><div class="feat-icon">P</div><div><div class="feat-name">Positioning That's Actually Yours</div><div class="feat-text">We find the specific angle that makes you unmistakable — not "marketing leader" but the exact POV that your audience can't get anywhere else.</div></div></div>
+      <div class="feat"><div class="feat-icon">C</div><div><div class="feat-name">Content That Sounds Like You</div><div class="feat-text">We ghost-write your LinkedIn presence, articles, and speaking hooks. The standard is simple: if you wouldn't have written it, it doesn't go out.</div></div></div>
+      <div class="feat"><div class="feat-icon">S</div><div><div class="feat-name">Stages That Are Worth Your Time</div><div class="feat-text">We actively pitch you for the keynotes, podcasts, and panel spots that move the needle — not every opportunity, the right ones.</div></div></div>
+      <div class="feat"><div class="feat-icon">M</div><div><div class="feat-name">Commercial Outcomes, Not Vanity Metrics</div><div class="feat-text">We care about brand deals, speaking fees, inbound opportunities, and recognition that goes on your CV. Follower counts are a by-product.</div></div></div>
+    </div>
+    <div class="adv-card rev">
+      <div class="adv-card-lbl">Advisory Programme — Limited Intake</div>
+      <h3>"We say no more often than we say yes. That's why the yes means something."</h3>
+      <p>We work with a small number of consumer-side marketing leaders each quarter. There's no waitlist illusion here — if the fit isn't right, we'll tell you. If it is, we go all in.</p>
+      <ul class="adv-list">
+        <li>Direct access to Danielle — not a junior team member</li>
+        <li>Ghostwritten LinkedIn content that's indistinguishable from your voice</li>
+        <li>Active stage and media pitching — we do the outreach</li>
+        <li>Brand partnership identification, negotiation, and management</li>
+        <li>Quarterly brand audit — what's working, what's not, what's next</li>
+        <li>We only take clients we know we can get exceptional results for</li>
+      </ul>
+      <a href="#" class="btn btn-ink open-modal">Apply for Advisory</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="sec-lbl rev">From the People We Work With</div>
+  <div class="test-grid">
+    <div class="test rev">
+      <div class="test-q">"I've been in marketing for 20 years. I know what good looks like. What Danielle does with content strategy is genuinely different — she understood my voice immediately, and the results followed fast."</div>
+      <div class="test-auth"><div class="test-av">N</div><div><div class="test-name">Nick Tran</div><div class="test-role">President &amp; CMO · First Round (Diageo × Main Street Advisors) · Former Global Head of Marketing, TikTok</div></div></div>
+    </div>
+    <div class="test rev">
+      <div class="test-q">"Danielle gets culture. That's rare. Most people in this space talk about personal brand and mean LinkedIn posts. She thinks about positioning, voice, and what actually builds a reputation that lasts."</div>
+      <div class="test-auth"><div class="test-av">J</div><div><div class="test-name">Jolyon Varley</div><div class="test-role">Co-Founder, OK COOL · #1 Culture Marketing Voice on LinkedIn</div></div></div>
+    </div>
+    <div class="test rev">
+      <div class="test-q">"We needed a speaker who would challenge the room — not recap industry trends everyone already knows. Unseen View found us exactly the right person. Under 48 hours. No back and forth."</div>
+      <div class="test-auth"><div class="test-av">—</div><div><div class="test-name">Client name coming</div><div class="test-role">Head of Events · Global Marketing Conference</div></div></div>
+    </div>
+    <div class="test rev">
+      <div class="test-q">"The brand deal they brokered was with a company I genuinely respect. The content felt natural because it was. And I didn't have to negotiate a single thing — they handled everything."</div>
+      <div class="test-auth"><div class="test-av">—</div><div><div class="test-name">Client name coming</div><div class="test-role">CMO · Consumer Scale-Up</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND — now dark, more dramatic -->
+<div class="cta-band rev">
+  <svg class="cta-bg-mark" width="560" height="560" viewBox="0 0 300 300" fill="none">
+    <rect x="62" y="62" width="176" height="176" stroke="white" stroke-width="1.5" fill="none"/>
+    <line x1="62"  y1="62"  x2="48"  y2="62"  stroke="white" stroke-width="1.5"/>
+    <line x1="62"  y1="62"  x2="62"  y2="48"  stroke="white" stroke-width="1.5"/>
+    <line x1="238" y1="62"  x2="252" y2="62"  stroke="white" stroke-width="1.5"/>
+    <line x1="238" y1="62"  x2="238" y2="48"  stroke="white" stroke-width="1.5"/>
+    <line x1="62"  y1="238" x2="48"  y2="238" stroke="white" stroke-width="1.5"/>
+    <line x1="62"  y1="238" x2="62"  y2="252" stroke="white" stroke-width="1.5"/>
+    <line x1="238" y1="238" x2="252" y2="238" stroke="white" stroke-width="1.5"/>
+    <line x1="238" y1="238" x2="238" y2="252" stroke="white" stroke-width="1.5"/>
+    <text x="150" y="182" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="108" font-weight="400" letter-spacing="-6" fill="white">UV</text>
+  </svg>
+  <h2>The opportunity cost of<br>staying invisible is <em>real.</em></h2>
+  <p class="cta-sub">Every week without a strategy is a stage you didn't get, a partnership that went to someone else, and a conversation that started without you. Let's fix that.</p>
+  <div class="cta-row">
+    <a href="#" class="btn btn-white open-modal">Book a Speaker</a>
+    <a href="#" class="btn btn-ghost open-modal">CMO Advisory</a>
+    <a href="#" class="btn btn-ghost open-modal">Brand Partnerships</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo">
+        <div class="ft-logo-badge">
+          <svg viewBox="0 0 32 28" fill="none">
+            <text x="0" y="24" font-family="Cormorant Garamond,serif" font-size="26" font-weight="400" fill="white" letter-spacing="-2">UV</text>
+          </svg>
+        </div>
+        <em>Unseen</em>view
+      </div>
+      <div class="ft-tag">Making senior marketing leaders impossible to ignore</div>
+    </div>
+    <div class="ft-links">
+      <div>
+        <div class="ft-col-lbl">Services</div>
+        <ul class="ft-list">
+          <li><a href="#">CMO Speaker Booking</a></li>
+          <li><a href="#">Brand Partnerships</a></li>
+          <li><a href="#">Personal Brand Advisory</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-lbl">Company</div>
+        <ul class="ft-list">
+          <li><a href="#">About Danielle</a></li>
+          <li><a href="#">The Network</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-lbl">Connect</div>
+        <ul class="ft-list">
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Media Kit</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <span>© 2025 Unseen View. All rights reserved.</span>
+    <div class="ft-bot-links"><a href="#">Privacy Policy</a><a href="#">Terms of Use</a></div>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──────────────────────────────────────────────────────
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (!el) return;
+  const dark = el.closest('.partnerships,.stats,footer,.overlay.on,.cta-band');
+  const lav  = el.closest('.advisory,.mq-wrap');
+  cur.classList.toggle('on-dark', !!dark && !lav);
+  cur.classList.toggle('on-lav',  !!lav);
+});
+document.querySelectorAll('a,button,.svc-card,.spk-card,.test,.feat').forEach(el => {
+  el.addEventListener('mouseenter', () => cur.classList.add('big'));
+  el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+// ── NAV SCROLL + ACTIVE SECTION ─────────────────────────────────
+const navEl = document.getElementById('nav');
+const sections = document.querySelectorAll('section[id], div.stats');
+const navAnchors = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('sc', window.scrollY > 40);
+  // Active nav link
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id || '';
+  });
+  navAnchors.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+
+// ── HAMBURGER MENU ───────────────────────────────────────────────
+const ham     = document.getElementById('ham');
+const mobMenu = document.getElementById('mob-menu');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  mobMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mob-link').forEach(a => {
+  a.addEventListener('click', () => {
+    ham.classList.remove('open');
+    mobMenu.classList.remove('open');
+  });
+});
+
+// ── MODAL ────────────────────────────────────────────────────────
+const overlay   = document.getElementById('overlay');
+const formFields = document.getElementById('form-fields');
+const formSucc   = document.getElementById('form-success');
+
+const openModal = () => {
+  // Reset to form state on open
+  formFields.classList.remove('hidden');
+  formSucc.classList.remove('on');
+  overlay.classList.add('on');
+};
+const closeModal = () => overlay.classList.remove('on');
+
+document.getElementById('mx').addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+document.querySelectorAll('.open-modal').forEach(el =>
+  el.addEventListener('click', e => { e.preventDefault(); openModal(); })
+);
+
+// Form submit → success state
+document.getElementById('submit-btn').addEventListener('click', () => {
+  formFields.classList.add('hidden');
+  formSucc.classList.add('on');
+});
+
+// ── SCROLL REVEAL ────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((en, i) => {
+    if(en.isIntersecting){
+      setTimeout(() => en.target.classList.add('on'), i * 80);
+      obs.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
